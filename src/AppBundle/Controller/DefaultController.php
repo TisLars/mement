@@ -5,9 +5,9 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use AppBundle\Entity\Triangle;
+
+use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 
 class DefaultController extends Controller
 {
@@ -16,41 +16,41 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $triangle = new Triangle();
-        $result = 'Fill in 3 sides';
 
-        $form = $this->createFormBuilder($triangle)
-            ->add('a', TextType::class)
-            ->add('b', TextType::class)
-            ->add('c', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Create triangle'))
-            ->getForm();
+    }
 
+    /**
+     * @Route("/register", name="register")
+     */
+    public function registerAction(Request $request)
+    {
+        // 1) build the form
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+
+        // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$triangle` variable has also been updated
-            $triangle = $form->getData();
 
-            // init sides
-            $a = $triangle->getA();
-            $b = $triangle->getB();
-            $c = $triangle->getC();
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            // $password = $this->get('security.password_encoder')
+            //     ->encodePassword($user, $user->getPassword());
+            // $user->setPassword($password);
 
-            if (($a + $b > $c) && ($a + $c > $b) && ($b + $c > $a))
-                $result = 'This is a triangle';
-            else
-                $result = 'This is NOT a triangle';
-
+            // 4) save the User!
             $em = $this->getDoctrine()->getManager();
-            $em->persist($triangle);
+            $em->persist($user);
             $em->flush();
+
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+
+            return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('default/new.html.twig', array(
-            'form' => $form->createView(),
-            'result' => $result,
-        ));
+        return $this->render(
+            'registration/register.html.twig',
+            array('form' => $form->createView())
+        );
     }
 }
