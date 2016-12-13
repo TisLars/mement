@@ -1,0 +1,10 @@
+{# app/Resources/views/calculcator/add.html.twig #}
+
+{{ form_start(form) }}
+    {{ form_row(form.a) }}
+    {{ form_row(form.b) }}
+
+    <button type="submit">Calculate!</button>
+{{ form_end(form) }}
+<br>
+{{result}}

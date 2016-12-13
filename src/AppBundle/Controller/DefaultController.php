@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use AppBundle\Form\CalcType;
+use AppBundle\Entity\Calculator;
 
 class DefaultController extends Controller
 {
@@ -17,6 +19,34 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         return $this->render('default/new.html.twig');
+    }
+
+    /**
+     * @Route("/number", name="number")
+     */
+    public function numberAction(Request $request)
+    {
+        $calc = new Calculator();
+        $a = 0;
+        $b = 0;
+        $result = 'null';
+
+        $form = $this->createForm(CalcType::class, $calc);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $a = $form->get('a')->getData();
+            $b = $form->get('b')->getData();
+            
+            $result = $a + $b;
+        }
+
+        return $this->render(
+            'calculator/calculate.html.twig',
+            array(
+                'form' => $form->createView(),
+                'result' => $result)
+        );
     }
 
     /**
