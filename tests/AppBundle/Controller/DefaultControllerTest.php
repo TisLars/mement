@@ -16,19 +16,19 @@ class DefaultControllerTest extends WebTestCase
         $this->assertContains('Hello world!', $crawler->filter('#test h1')->text());
     }
 
-    public function testNumber()
-    {
-        $client = static::createClient();
+  //   public function testNumber()
+  //   {
+  //       $client = static::createClient();
 
-        $crawler = $client->request('GET', '/number');
+  //       $crawler = $client->request('GET', '/number');
 
-    	$form = $crawler->selectButton('submit')->form();
+  //   	$form = $crawler->selectButton('submit')->form();
 
-		// set some values
-		$form['a'] = '14';
-		$form['b'] = '10';
+		// // set some values
+		// $form['a'] = '14';
+		// $form['b'] = '10';
 
-		// submit the form
-		$crawler = $client->submit($form);
-    }
+		// // submit the form
+		// $crawler = $client->submit($form);
+  //   }
 }
