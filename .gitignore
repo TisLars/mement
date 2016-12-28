@@ -48,3 +48,5 @@
 */Entity/*~
 
 .phpintel
+
+tests/_output/*
