@@ -1,0 +1,19 @@
+#production
+deployment:
+  user: root
+  from: ./
+  to: ~/vhosts/mement.nl/subdomains/stage
+  excludes:
+releases:
+  enabled: true
+  max: 1
+  symlink: htdocs
+  directory: releases
+hosts:
+  - 83.137.145.57
+tasks:
+  pre-deploy:
+  on-deploy:
+    - symlink: { link: ~/vhosts/mement.nl/htdocs/subdomains/stage/web/bundles, target: ~/vhosts/mement.nl/htdocs/web/bundles }
+  post-release:
+  post-deploy:

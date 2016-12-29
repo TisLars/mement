@@ -1,0 +1,18 @@
+#production
+deployment:
+  user: root
+  from: ./
+  to: ~/vhosts/mement.nl/subdomains/demo
+  excludes:
+releases:
+  enabled: true
+  max: 1
+  symlink: htdocs
+  directory: releases
+hosts:
+  - 83.137.145.57
+tasks:
+  pre-deploy:
+  on-deploy:
+  post-release:
+  post-deploy:
